@@ -12,7 +12,11 @@ public class Backtracking extends AbstractTechnique {
 
     @Override
     public boolean apply(SudokuBoard board) {
-        return backtrack(board);
+        for (int r = 0; r < 9; r++)
+            for (int c = 0; c < 9; c++)
+                if (board.getCells(r, c) == 0)
+                    return backtrack(board);
+        return false;
     }
 
     @Override
