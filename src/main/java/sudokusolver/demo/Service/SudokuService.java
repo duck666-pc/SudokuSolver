@@ -37,10 +37,15 @@ public class SudokuService {
         for (int r = 0; r < 9; r++) {
             for (int c = 0; c < 9; c++) {
                 if (board.getCells(r, c) == 0) {
-                    Set<Integer> all = new HashSet<>(Set.of(1, 2, 3, 4, 5, 6, 7, 8, 9));
-                    board.setPickable(r, c, all);
+                    board.setPickable(r, c, new HashSet<>(Set.of(1, 2, 3, 4, 5, 6, 7, 8, 9)));
                 } else {
                     board.setPickable(r, c, new HashSet<>(Set.of(board.getCells(r, c))));
+                }
+            }
+        }
+        for (int r = 0; r < 9; r++) {
+            for (int c = 0; c < 9; c++) {
+                if (board.getCells(r, c) != 0) {
                     SudokuUtils.eliminate(board, r, c, board.getCells(r, c));
                 }
             }
