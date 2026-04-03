@@ -77,7 +77,7 @@
 <p>- Ô màu xanh lá là ô do máy tự điền</p>
 <br>
 
-<form action="/solve" method="post" id="sudoku-form">
+<form action="/" method="post" id="sudoku-form">
     <table>
         <tr th:each="row, rowStat : ${#numbers.sequence(0, 8)}">
             <td th:each="col, colStat : ${#numbers.sequence(0, 8)}">

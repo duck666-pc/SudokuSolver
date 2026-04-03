@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class SudokuBoard {
-    private int[][] cells;
+    private int[][] cells = new int[9][9];
     private Set<Integer>[][] pickable = new HashSet[9][9];
 
     public int[][] getCells() {
