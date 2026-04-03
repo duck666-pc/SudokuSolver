@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sudokusolver.demo.Model.SudokuBoard;
 import sudokusolver.demo.Technique.SolvingTechnique;
+import sudokusolver.demo.Technique.SudokuUtils;
 
 import java.util.HashSet;
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.Set;
 
 @Service
 public class SudokuService {
+
     @Autowired
     private List<SolvingTechnique> techniques;
 
@@ -39,32 +41,7 @@ public class SudokuService {
                     board.setPickable(r, c, all);
                 } else {
                     board.setPickable(r, c, new HashSet<>(Set.of(board.getCells(r, c))));
-                    eliminate(board, r, c, board.getCells(r, c));
-                }
-            }
-        }
-    }
-
-    public void eliminate(SudokuBoard board, int row, int col, int num) {
-        for (int c = 0; c < 9; c++) {
-            if (c != col && board.getPickable(row, c) != null) {
-                board.getPickable(row, c).remove(num);
-            }
-        }
-
-        for (int r = 0; r < 9; r++) {
-            if (r != row && board.getPickable(r, col) != null) {
-                board.getPickable(r, col).remove(num);
-            }
-        }
-
-        int startRow = row - row % 3;
-        int startCol = col - col % 3;
-        for (int r = 0; r < 3; r++) {
-            for (int c = 0; c < 3; c++) {
-                if (startRow + r != row || startCol + c != col) {
-                    if (board.getPickable(startRow + r, startCol + c) != null)
-                        board.getPickable(startRow + r, startCol + c).remove(num);
+                    SudokuUtils.eliminate(board, r, c, board.getCells(r, c));
                 }
             }
         }
