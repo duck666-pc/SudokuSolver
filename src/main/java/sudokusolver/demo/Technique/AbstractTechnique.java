@@ -24,7 +24,7 @@ public abstract class AbstractTechnique implements SolvingTechnique {
         for (int r = 0; r < 9; r++) {
             List<int[]> group = new ArrayList<>();
             for (int c = 0; c < 9; c++)
-                if (board.getCell(r, c) == 0)
+                if (board.getCells(r, c) == 0)
                     group.add(new int[]{r, c});
             groups.add(group);
         }
@@ -32,7 +32,7 @@ public abstract class AbstractTechnique implements SolvingTechnique {
         for (int c = 0; c < 9; c++) {
             List<int[]> group = new ArrayList<>();
             for (int r = 0; r < 9; r++)
-                if (board.getCell(r, c) == 0)
+                if (board.getCells(r, c) == 0)
                     group.add(new int[]{r, c});
             groups.add(group);
         }
@@ -44,7 +44,7 @@ public abstract class AbstractTechnique implements SolvingTechnique {
                     for (int c = 0; c < 3; c++) {
                         int row = boxR * 3 + r;
                         int col = boxC * 3 + c;
-                        if (board.getCell(row, col) == 0)
+                        if (board.getCells(row, col) == 0)
                             group.add(new int[]{row, col});
                     }
                 }
@@ -54,4 +54,5 @@ public abstract class AbstractTechnique implements SolvingTechnique {
 
         return groups;
     }
+
 }

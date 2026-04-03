@@ -16,7 +16,7 @@ public class PointingPairs extends AbstractTechnique {
         if (group.isEmpty() || !TechniqueUtils.isSameBox(group)) return false;
 
         for (int num = 1; num <= 9; num++) {
-            List<int[]> cells = TechniqueUtils.findCellsWithCandidate(board, group, num);
+            List<int[]> cells = TechniqueUtils.findCellsWithPickable(board, group, num);
             if (cells.size() < 2) continue;
 
             if (TechniqueUtils.isSameRow(cells)) {
@@ -24,7 +24,7 @@ public class PointingPairs extends AbstractTechnique {
                 for (int c = 0; c < 9; c++) {
                     if (isInGroup(cells, row, c)) continue;
                     if (board.getCells(row, c) == 0)
-                        if (board.getCandidates(row, c).remove(num)) progress = true;
+                        if (board.getPickable(row, c).remove(num)) progress = true;
                 }
             }
 
@@ -33,7 +33,7 @@ public class PointingPairs extends AbstractTechnique {
                 for (int r = 0; r < 9; r++) {
                     if (isInGroup(cells, r, col)) continue;
                     if (board.getCells(r, col) == 0)
-                        if (board.getCandidates(r, col).remove(num)) progress = true;
+                        if (board.getPickable(r, col).remove(num)) progress = true;
                 }
             }
         }

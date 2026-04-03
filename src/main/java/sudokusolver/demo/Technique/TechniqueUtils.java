@@ -14,6 +14,11 @@ public class TechniqueUtils {
                 .collect(Collectors.toList());
     }
 
+    public static List<int[]> findCellsWithPickable(
+            SudokuBoard board, List<int[]> group, int num) {
+        return findCellsWithCandidate(board, group, num);
+    }
+
     public static boolean isSameRow(List<int[]> cells) {
         return cells.stream().allMatch(c -> c[0] == cells.get(0)[0]);
     }

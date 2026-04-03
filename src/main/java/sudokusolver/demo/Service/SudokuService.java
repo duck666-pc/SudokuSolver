@@ -1,5 +1,6 @@
 package sudokusolver.demo.Service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sudokusolver.demo.Model.SudokuBoard;
 import sudokusolver.demo.Technique.SolvingTechnique;
@@ -10,9 +11,10 @@ import java.util.Set;
 
 @Service
 public class SudokuService {
-    private List<SolvingTechnique> techniques = List.of();
+    @Autowired
+    private List<SolvingTechnique> techniques;
 
-    public SudokuBoard solve (SudokuBoard board){
+    public SudokuBoard solve(SudokuBoard board) {
         initPickable(board);
 
         boolean progress = true;
@@ -29,10 +31,10 @@ public class SudokuService {
         return board;
     }
 
-    public void initPickable(SudokuBoard board){
-        for (int r = 0; r < 9; r++){
-            for (int c = 0; c < 9; c++){
-                if(board.getCells(r, c) == 0) {
+    public void initPickable(SudokuBoard board) {
+        for (int r = 0; r < 9; r++) {
+            for (int c = 0; c < 9; c++) {
+                if (board.getCells(r, c) == 0) {
                     Set<Integer> all = new HashSet<>(Set.of(1, 2, 3, 4, 5, 6, 7, 8, 9));
                     board.setPickable(r, c, all);
                 } else {
@@ -43,28 +45,28 @@ public class SudokuService {
         }
     }
 
-    public void eliminate(SudokuBoard board, int row, int col, int num){
-        for (int c = 0; c < 9; c++){
-            if (c != col) {
-                board.getPickable(c, row).remove(num);
+    public void eliminate(SudokuBoard board, int row, int col, int num) {
+        for (int c = 0; c < 9; c++) {
+            if (c != col && board.getPickable(row, c) != null) {
+                board.getPickable(row, c).remove(num);
             }
         }
 
-        for (int r = 0; r < 9; r++){
-            if (r != row) {
+        for (int r = 0; r < 9; r++) {
+            if (r != row && board.getPickable(r, col) != null) {
                 board.getPickable(r, col).remove(num);
             }
         }
 
         int startRow = row - row % 3;
         int startCol = col - col % 3;
-        for (int r = 0; r < 3; r++){
-            for (int c = 0; c < 3; c++){
+        for (int r = 0; r < 3; r++) {
+            for (int c = 0; c < 3; c++) {
                 if (startRow + r != row || startCol + c != col) {
-                    board.getPickable(startRow + r, startCol + c).remove(num);
+                    if (board.getPickable(startRow + r, startCol + c) != null)
+                        board.getPickable(startRow + r, startCol + c).remove(num);
                 }
             }
         }
-
     }
 }
