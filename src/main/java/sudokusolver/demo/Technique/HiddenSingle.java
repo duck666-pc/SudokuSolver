@@ -6,8 +6,6 @@ import sudokusolver.demo.Model.SudokuBoard;
 
 import java.util.List;
 
-package sudokusolver.demo.Technique;
-
 @Component
 @Order(2)
 public class HiddenSingle extends AbstractTechnique {
