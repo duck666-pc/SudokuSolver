@@ -1,51 +1,62 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Sudoku Solver</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        table { border-collapse: collapse; }
+        td { border: 1px solid #999; }
+        td:nth-child(3n) { border-right: 3px solid #000; }
+        tr:nth-child(3n) td { border-bottom: 3px solid #000; }
+        input { width: 40px; height: 40px; text-align: center; font-size: 1.2rem; border: none; }
+        input.solved { background: #d4edda; }
+    </style>
 </head>
-<body class="container py-4">
+<body>
 
-<div id="loading-overlay">
-    <div class="spinner"></div>
-    <div class="loading-text">Đang giải Sudoku...</div>
-    <div class="loading-sub">Vui lòng chờ trong giây lát</div>
+<p th:if="${error}" th:text="${error}" style="color:red"></p>
+
+<div th:if="${solutionCount != null and solutionCount > 1}">
+    <button onclick="navigate(-1)" id="prev" disabled>‹</button>
+    <span id="label">Đáp án 1 / <span th:text="${solutionCount}"></span><span th:if="${solutionCount==10}">+</span></span>
+    <button onclick="navigate(1)" id="next">›</button>
 </div>
 
-<h1>Sudoku Solver Machine</h1>
-<p>- Nhập số vào các ô bên dưới</p>
-<p>- Bấm nút <strong>Giải</strong>, chờ máy xử lý</p>
-<p>- Ô màu xanh lá là ô do máy tự điền</p>
-<br>
-
-<form action="/" method="post" id="sudoku-form">
+<form action="/" method="post" id="form">
     <table>
-        <tr th:each="row, rowStat : ${#numbers.sequence(0, 8)}">
-            <td th:each="col, colStat : ${#numbers.sequence(0, 8)}">
-                <input type="number" min="1" max="9"
+        <tr th:each="row : ${#numbers.sequence(0,8)}">
+            <td th:each="col : ${#numbers.sequence(0,8)}">
+                <input type="text" inputmode="numeric" maxlength="1"
                        th:name="|cell_${row}_${col}|"
                        th:value="${board != null and board[row][col] != 0 ? board[row][col] : ''}"
-                       th:data-original="${originalBoard != null and originalBoard[row][col] != 0 ? originalBoard[row][col] : '0'}"
-                       th:classappend="${board != null
-                           and board[row][col] != 0
-                           and (originalBoard == null or originalBoard[row][col] == 0)
-                           ? 'solved' : ''}">
+                       th:data-orig="${originalBoard != null and originalBoard[row][col] != 0 ? originalBoard[row][col] : '0'}"
+                       th:classappend="${board != null and board[row][col] != 0
+                     and (originalBoard == null or originalBoard[row][col] == 0) ? 'solved' : ''}">
             </td>
         </tr>
     </table>
-
-    <div class="d-flex gap-2">
-        <button type="submit" class="btn btn-primary" id="solve-btn">⚡ Giải</button>
-        <a href="/" class="btn btn-secondary">🗑 Xóa</a>
-    </div>
+    <br>
+    <button type="submit">Giải</button>
+    <a href="/"><button type="button">Xóa</button></a>
 </form>
 
-<script>
-    document.getElementById('sudoku-form').addEventListener('submit', function () {
-        document.getElementById('loading-overlay').classList.add('show');
-        document.getElementById('solve-btn').disabled = true;
-    });
+<script th:if="${solutionsJson != null}" th:inline="javascript">
+    const S = /*[[${solutionsJson}]]*/ [];
+    const O = /*[[${originalBoard}]]*/ [];
+    let cur = 0;
+    function navigate(d) {
+        cur = Math.max(0, Math.min(S.length - 1, cur + d));
+        document.getElementById('label').textContent = 'Đáp án ' + (cur+1) + ' / ' + S.length + (S.length===10?'+':'');
+        document.getElementById('prev').disabled = cur === 0;
+        document.getElementById('next').disabled = cur === S.length - 1;
+        const inputs = document.querySelectorAll('#form input');
+        let i = 0;
+        for (let r = 0; r < 9; r++) for (let c = 0; c < 9; c++) {
+            const inp = inputs[i++];
+            inp.value = S[cur][r][c] || '';
+            inp.className = O[r][c] === 0 && S[cur][r][c] ? 'solved' : '';
+        }
+    }
 </script>
 
 </body>
