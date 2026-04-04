@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sudokusolver.demo.Model.SudokuBoard;
 import sudokusolver.demo.Model.SudokuResult;
-import sudokusolver.demo.Technique.Backtracking;
 import sudokusolver.demo.Technique.SolvingTechnique;
 import sudokusolver.demo.Technique.SudokuUtils;
 import sudokusolver.demo.Technique.SudokuValidator;

@@ -9,18 +9,11 @@
         td:nth-child(3n) { border-right: 3px solid #000; }
         tr:nth-child(3n) td { border-bottom: 3px solid #000; }
         input { width: 40px; height: 40px; text-align: center; font-size: 1.2rem; border: none; }
-        input.solved { background: #d4edda; }
     </style>
 </head>
 <body>
 
 <p th:if="${error}" th:text="${error}" style="color:red"></p>
-
-<div th:if="${solutionCount != null and solutionCount > 1}">
-    <button onclick="navigate(-1)" id="prev" disabled>‹</button>
-    <span id="label">Đáp án 1 / <span th:text="${solutionCount}"></span><span th:if="${solutionCount==10}">+</span></span>
-    <button onclick="navigate(1)" id="next">›</button>
-</div>
 
 <form action="/" method="post" id="form">
     <table>
@@ -28,10 +21,7 @@
             <td th:each="col : ${#numbers.sequence(0,8)}">
                 <input type="text" inputmode="numeric" maxlength="1"
                        th:name="|cell_${row}_${col}|"
-                       th:value="${board != null and board[row][col] != 0 ? board[row][col] : ''}"
-                       th:data-orig="${originalBoard != null and originalBoard[row][col] != 0 ? originalBoard[row][col] : '0'}"
-                       th:classappend="${board != null and board[row][col] != 0
-                     and (originalBoard == null or originalBoard[row][col] == 0) ? 'solved' : ''}">
+                       th:value="${board != null and board[row][col] != 0 ? board[row][col] : ''}">
             </td>
         </tr>
     </table>
@@ -39,25 +29,6 @@
     <button type="submit">Giải</button>
     <a href="/"><button type="button">Xóa</button></a>
 </form>
-
-<script th:if="${solutionsJson != null}" th:inline="javascript">
-    const S = JSON.parse(/*[[${solutionsJson}]]*/ '[]');
-    const O = /*[[${originalBoard}]]*/ [];
-    let cur = 0;
-    function navigate(d) {
-        cur = Math.max(0, Math.min(S.length - 1, cur + d));
-        document.getElementById('label').textContent = 'Đáp án ' + (cur+1) + ' / ' + S.length + (S.length===10?'+':'');
-        document.getElementById('prev').disabled = cur === 0;
-        document.getElementById('next').disabled = cur === S.length - 1;
-        const inputs = document.querySelectorAll('#form input');
-        let i = 0;
-        for (let r = 0; r < 9; r++) for (let c = 0; c < 9; c++) {
-            const inp = inputs[i++];
-            inp.value = S[cur][r][c] || '';
-            inp.className = O[r][c] === 0 && S[cur][r][c] ? 'solved' : '';
-        }
-    }
-</script>
 
 </body>
 </html>

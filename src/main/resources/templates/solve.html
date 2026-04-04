@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Sudoku Solver - Đáp án</title>
+    <style>
+        table { border-collapse: collapse; }
+        td { border: 1px solid #999; }
+        td:nth-child(3n) { border-right: 3px solid #000; }
+        tr:nth-child(3n) td { border-bottom: 3px solid #000; }
+        input { width: 40px; height: 40px; text-align: center; font-size: 1.2rem; border: none; }
+        input.solved { background: #d4edda; }
+    </style>
+</head>
+<body>
+
+<div>
+    <a th:if="${page > 0}" th:href="@{/solve(page=${page - 1})}"><button type="button">‹</button></a>
+    <button th:if="${page == 0}" type="button" disabled>‹</button>
+
+    <span>Đáp án <span th:text="${page + 1}"></span> / <span th:text="${solutionCount}"></span><span th:if="${solutionCount == 10}">+</span></span>
+
+    <a th:if="${page < solutionCount - 1}" th:href="@{/solve(page=${page + 1})}"><button type="button">›</button></a>
+    <button th:if="${page == solutionCount - 1}" type="button" disabled>›</button>
+</div>
+
+<table>
+    <tr th:each="row : ${#numbers.sequence(0,8)}">
+        <td th:each="col : ${#numbers.sequence(0,8)}">
+            <input type="text" readonly
+                   th:value="${board != null and board[row][col] != 0 ? board[row][col] : ''}"
+                   th:classappend="${board != null and board[row][col] != 0
+                       and (originalBoard == null or originalBoard[row][col] == 0) ? 'solved' : ''}">
+        </td>
+    </tr>
+</table>
+<br>
+<a href="/back"><button type="button">Quay lại</button></a>
+
+</body>
+</html>

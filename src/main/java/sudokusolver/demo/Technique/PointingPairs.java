@@ -56,6 +56,9 @@ public class PointingPairs extends AbstractTechnique {
     }
 
     private boolean isInGroup(List<int[]> cells, int row, int col) {
-        return cells.stream().anyMatch(c -> c[0] == row && c[1] == col);
+        for (int[] c : cells) {
+            if (c[0] == row && c[1] == col) return true;
+        }
+        return false;
     }
 }
