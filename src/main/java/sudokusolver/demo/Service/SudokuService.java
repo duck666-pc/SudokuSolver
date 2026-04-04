@@ -66,27 +66,18 @@ public class SudokuService {
 
     private boolean isValid(SudokuBoard board, int row, int col, int num) {
         for (int c = 0; c < 9; c++){
-            if (board.getCells(row, c) == num){
-                return false;
-            }
+            if (board.getCells(row, c) == num) return false;
         }
-
         for (int r = 0; r < 9; r++){
-            if (board.getCells(r, col) == num){
-                return false;
-            }
+            if (board.getCells(r, col) == num) return false;
         }
-
         int sr = row - row % 3, sc = col - col % 3;
         for (int r = 0; r < 3; r++){
             for (int c = 0; c < 3; c++){
-                if (board.getCells(sr + r, sc + c) == num){
-                    return false;
-                }
-                return true;
+                if (board.getCells(sr + r, sc + c) == num) return false;
             }
         }
-        return false;
+        return true;
     }
 
     private int[][] copyBoard(SudokuBoard board) {
@@ -95,7 +86,6 @@ public class SudokuService {
             for (int c = 0; c < 9; c++){
                 copy[r][c] = board.getCells(r, c);
             }
-            return copy;
         }
         return copy;
     }
