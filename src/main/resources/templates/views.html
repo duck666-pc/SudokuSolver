@@ -41,7 +41,7 @@
 </form>
 
 <script th:if="${solutionsJson != null}" th:inline="javascript">
-    const S = /*[[${solutionsJson}]]*/ [];
+    const S = JSON.parse(/*[[${solutionsJson}]]*/ '[]');
     const O = /*[[${originalBoard}]]*/ [];
     let cur = 0;
     function navigate(d) {

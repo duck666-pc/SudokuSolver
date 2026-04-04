@@ -27,13 +27,11 @@ public class SudokuService {
     private final ObjectMapper mapper = new ObjectMapper();
 
     public SudokuResult solve(SudokuBoard board) {
-        // Fix #3: validate trước
         String error = SudokuValidator.validate(board);
         if (error != null) return new SudokuResult(error);
 
         initPickable(board);
 
-        // Áp dụng các kỹ thuật logic (bỏ qua Backtracking)
         boolean progress = true;
         while (progress) {
             progress = false;
@@ -43,7 +41,6 @@ public class SudokuService {
             }
         }
 
-        // Fix #4: tìm tất cả nghiệm (tối đa MAX_SOLUTIONS)
         List<int[][]> solutions = new ArrayList<>();
         findSolutions(board, solutions);
 
@@ -51,7 +48,6 @@ public class SudokuService {
         return new SudokuResult(solutions);
     }
 
-    // Fix #2 + #5: dùng pickable làm candidate hint, isValid để đảm bảo đúng
     private void findSolutions(SudokuBoard board, List<int[][]> solutions) {
         if (solutions.size() >= MAX_SOLUTIONS) return;
 
