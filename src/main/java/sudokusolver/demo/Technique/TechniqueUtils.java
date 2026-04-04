@@ -20,7 +20,9 @@ public class TechniqueUtils {
     public static boolean isSameRow(List<int[]> cells) {
         int firstRow = cells.get(0)[0];
         for (int[] c : cells) {
-            if (c[0] != firstRow) return false;
+            if (c[0] != firstRow){
+                return false;
+            }
         }
         return true;
     }
@@ -28,7 +30,9 @@ public class TechniqueUtils {
     public static boolean isSameCol(List<int[]> cells) {
         int firstCol = cells.get(0)[1];
         for (int[] c : cells) {
-            if (c[1] != firstCol) return false;
+            if (c[1] != firstCol){
+                return false;
+            }
         }
         return true;
     }

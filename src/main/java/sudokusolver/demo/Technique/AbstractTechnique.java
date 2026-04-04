@@ -44,8 +44,9 @@ public abstract class AbstractTechnique implements SolvingTechnique {
                     for (int c = 0; c < 3; c++) {
                         int row = boxR * 3 + r;
                         int col = boxC * 3 + c;
-                        if (board.getCells(row, col) == 0)
+                        if (board.getCells(row, col) == 0){
                             group.add(new int[]{row, col});
+                        }
                     }
                 }
                 groups.add(group);

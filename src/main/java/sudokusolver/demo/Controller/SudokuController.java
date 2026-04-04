@@ -50,7 +50,6 @@ public class SudokuController {
 
         List<int[][]> solutions = result.getSolutions();
 
-        // Lưu vào session để /solve và /back dùng lại
         session.setAttribute("solutions", solutions);
         session.setAttribute("originalBoard", originalBoard);
         session.setAttribute("solutionCount", solutions.size());
@@ -67,7 +66,6 @@ public class SudokuController {
         int[][] originalBoard = (int[][]) session.getAttribute("originalBoard");
         int solutionCount = (int) session.getAttribute("solutionCount");
 
-        // Giới hạn page không vượt biên
         page = Math.max(0, Math.min(page, solutionCount - 1));
 
         model.addAttribute("board", solutions.get(page));
@@ -77,7 +75,6 @@ public class SudokuController {
         return "solve";
     }
 
-    // Quay lại trang nhập với đề bài gốc được phục hồi từ session
     @GetMapping("/back")
     public String back(Model model, HttpSession session) {
         int[][] originalBoard = (int[][]) session.getAttribute("originalBoard");
